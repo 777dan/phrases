@@ -1,0 +1,28 @@
+#words {
+    /* width: 400px; */
+    height: 300px;
+    background-color: tan;
+    padding: 20px;
+    display: inline-block;
+}
+
+.card {
+    padding: 10px;
+    margin: 5px;
+    display: inline-block;
+    background-color: tan;
+    min-width: 50px;
+}
+
+#check {
+    display: block;
+}
+
+.words {
+    border: 1px solid #000;
+    border-radius: 12px;
+    padding: 8px;
+    margin: 12px;
+    width: 50px;
+    display: inline-block;
+}
