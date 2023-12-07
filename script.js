@@ -27,6 +27,8 @@ for (let i = 0; i < subPhrases.length; i++) {
     dropField.innerHTML += `<div id="textField${i + 1}" class="emptyField" ondragover="allowDrop(event)" ondrop="drop(event)"></div>`;
 }
 
+const getId = (oldId, newId) => newId + oldId.slice(oldId.length - 1);
+
 function allowDrop(event) {
     event.preventDefault();
 }
@@ -39,42 +41,43 @@ function drag(event) {
 function drop(event) {
     event.preventDefault();
     const data = event.dataTransfer.getData("text");
-    const id = event.dataTransfer.getData("id");
-    const currentField = document.querySelector(`#${id}`).parentElement;
-    if (id.includes('drag')) {
-        if (event.target.id.includes('textField')) {
-            event.target.innerHTML += `<div id="text${id.slice(id.length - 1)}" class="wordBlocks" draggable="true" ondragstart="drag(event)">${data} </div>`;
+    const currentId = event.dataTransfer.getData("id");
+    const currentField = document.querySelector(`#${currentId}`).parentElement;
+    const targetId = event.target.id;
+    if (currentId.includes('drag')) {
+        if (targetId.includes('textField')) {
+            event.target.innerHTML += `<div id="${getId(currentId, 'text')}" class="wordBlocks" draggable="true" ondragstart="drag(event)">${data} </div>`;
             event.target.classList = "occupiedField";
-            document.querySelector(`#text${id.slice(id.length - 1)}`).style.margin = "0";
-            document.querySelector(`#${id} `).remove();
+            document.querySelector(`#${getId(currentId, 'text')}`).style.margin = "0";
+            document.querySelector(`#${currentId} `).remove();
         }
         if (event.target.parentElement.id.includes('textField')) {
-            phrasesField.innerHTML += `<div id="drag${event.target.id.slice(event.target.id.length - 1)}" class="wordBlocks" draggable="true" ondragstart="drag(event)">${event.target.textContent.trim()}</div>`;
-            event.target.parentElement.innerHTML += `<div id="text${id.slice(id.length - 1)}" class="wordBlocks" draggable="true" ondragstart="drag(event)">${data} </div>`;
+            phrasesField.innerHTML += `<div id="${getId(targetId, 'drag')}" class="wordBlocks" draggable="true" ondragstart="drag(event)">${event.target.textContent.trim()}</div>`;
+            event.target.parentElement.innerHTML += `<div id="${getId(currentId, 'text')}" class="wordBlocks" draggable="true" ondragstart="drag(event)">${data} </div>`;
             event.target.style.margin = "16px 8px";
-            document.querySelector(`#text${id.slice(id.length - 1)}`).style.margin = "0";
-            document.querySelector(`#${event.target.id} `).remove();
-            document.querySelector(`#${id}`).remove();
+            document.querySelector(`#${getId(currentId, 'text')}`).style.margin = "0";
+            document.querySelector(`#${targetId}`).remove();
+            document.querySelector(`#${currentId}`).remove();
         }
     }
-    if (id.includes('text')) {
-        if (event.target.id.includes('phrases')) {
-            event.target.innerHTML += `<div id="drag${id.slice(id.length - 1)}" class="wordBlocks" draggable="true" ondragstart="drag(event)">${data.trim()}</div>`;
+    if (currentId.includes('text')) {
+        if (targetId.includes('phrases')) {
+            event.target.innerHTML += `<div id="${getId(currentId, 'text')}" class="wordBlocks" draggable="true" ondragstart="drag(event)">${data.trim()}</div>`;
             currentField.classList = "emptyField";
-            document.querySelector(`#drag${id.slice(id.length - 1)}`).style.margin = "16px 8px";
-            document.querySelector(`#${id} `).remove();
+            document.querySelector(`#${getId(currentId, 'drag')}`).style.margin = "16px 8px";
+            document.querySelector(`#${currentId} `).remove();
         }
         if (event.target.parentElement.id.includes('textField')) {
-            phrasesField.innerHTML += `<div id="drag${event.target.id.slice(event.target.id.length - 1)}" class="wordBlocks" draggable="true" ondragstart="drag(event)">${event.target.textContent.trim()}</div>`;
+            phrasesField.innerHTML += `<div id="${getId(targetId, 'drag')}" class="wordBlocks" draggable="true" ondragstart="drag(event)">${event.target.textContent.trim()}</div>`;
             currentField.classList = "emptyField";
-            document.querySelector(`#${id}`).remove();
-            event.target.parentElement.innerHTML = `<div id="${id}" class="wordInner" draggable="true" ondragstart="drag(event)">${data}</div>`;
+            document.querySelector(`#${currentId}`).remove();
+            event.target.parentElement.innerHTML = `<div id="${currentId}" class="wordInner" draggable="true" ondragstart="drag(event)">${data}</div>`;
             event.target.remove();
         }
-        if (event.target.id.includes('textField')) {
+        if (targetId.includes('textField')) {
             currentField.classList = "emptyField";
-            document.querySelector(`#${id}`).remove();
-            event.target.innerHTML = `<div id="${id}" class="wordInner" draggable="true" ondragstart="drag(event)">${data}</div>`;
+            document.querySelector(`#${currentId}`).remove();
+            event.target.innerHTML = `<div id="${currentId}" class="wordInner" draggable="true" ondragstart="drag(event)">${data}</div>`;
             event.target.classList = "occupiedField";
         }
     }
