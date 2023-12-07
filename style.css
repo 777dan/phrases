@@ -8,16 +8,6 @@
     display: block;
 }
 
-/* .words {
-    border: 3px solid #161515;
-    border-radius: 12px;
-    padding: 8px;
-    margin: 12px;
-    width: 50px;
-    height: 20px;
-    display: inline-flex;
-} */
-
 .emptyField {
     border: 3px solid #161515;
     border-radius: 12px;

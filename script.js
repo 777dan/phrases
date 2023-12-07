@@ -10,6 +10,18 @@ const phrasesField = document.querySelector('#phrases');
 const msgField = document.querySelector('#msg');
 const dropField = document.querySelector('#words');
 const checkButton = document.querySelector('#check');
+
+const shuffleArray = (array) => {
+    const arrLength = array.length;
+    let randIndex;
+    for (let i = 0; i < arrLength; i++) {
+        randIndex = Math.floor(Math.random() * arrLength);
+        array[arrLength] = array[randIndex];
+        array.splice(randIndex, 1);
+    }
+}
+shuffleArray(subPhrases);
+
 for (let i = 0; i < subPhrases.length; i++) {
     phrasesField.innerHTML += `<div id="drag${i + 1}" class="wordBlocks" draggable="true" ondragstart="drag(event)">${subPhrases[i]}</div>`;
     dropField.innerHTML += `<div id="textField${i + 1}" class="emptyField" ondragover="allowDrop(event)" ondrop="drop(event)"></div>`;
