@@ -8,7 +8,17 @@
     display: block;
 }
 
-.words {
+/* .words {
+    border: 3px solid #161515;
+    border-radius: 12px;
+    padding: 8px;
+    margin: 12px;
+    width: 50px;
+    height: 20px;
+    display: inline-flex;
+} */
+
+.emptyField {
     border: 3px solid #161515;
     border-radius: 12px;
     padding: 8px;
@@ -18,12 +28,26 @@
     display: inline-flex;
 }
 
+.occupiedField {
+    border: 3px solid #161515;
+    border-radius: 12px;
+    margin: 12px;
+    display: inline-flex;
+}
+
 .wordBlocks {
     padding: 12px;
     background-color: #ff2d2d;
     border-radius: 9px;
     z-index: 2;
     margin: 16px 8px;
+}
+
+.wordInner {
+    padding: 12px;
+    background-color: #ff2d2d;
+    border-radius: 9px;
+    z-index: 2;
 }
 
 #phrases {

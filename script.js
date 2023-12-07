@@ -12,7 +12,7 @@ const dropField = document.querySelector('#words');
 const checkButton = document.querySelector('#check');
 for (let i = 0; i < subPhrases.length; i++) {
     phrasesField.innerHTML += `<div id="drag${i + 1}" class="wordBlocks" draggable="true" ondragstart="drag(event)">${subPhrases[i]}</div>`;
-    dropField.innerHTML += `<div id="textField${i + 1}" class="words" ondragover="allowDrop(event)" ondrop="drop(event)"></div>`;
+    dropField.innerHTML += `<div id="textField${i + 1}" class="emptyField" ondragover="allowDrop(event)" ondrop="drop(event)"></div>`;
 }
 
 function allowDrop(event) {
@@ -28,22 +28,44 @@ function drop(event) {
     event.preventDefault();
     const data = event.dataTransfer.getData("text");
     const id = event.dataTransfer.getData("id");
+    const currentField = document.querySelector(`#${id}`).parentElement;
     if (id.includes('drag')) {
-        event.target.innerHTML += `<div id="text${id.slice(id.length - 1)}" class="wordBlocks" draggable="true" ondragstart="drag(event)">${data} </div>`;
-        event.target.style.padding = "0";
-        event.target.style.width = "auto"
-        event.target.style.height = "auto"
-        document.querySelector(`#text${id.slice(id.length - 1)}`).style.margin = "0";
+        if (event.target.id.includes('textField')) {
+            event.target.innerHTML += `<div id="text${id.slice(id.length - 1)}" class="wordBlocks" draggable="true" ondragstart="drag(event)">${data} </div>`;
+            event.target.classList = "occupiedField";
+            document.querySelector(`#text${id.slice(id.length - 1)}`).style.margin = "0";
+            document.querySelector(`#${id} `).remove();
+        }
+        if (event.target.parentElement.id.includes('textField')) {
+            phrasesField.innerHTML += `<div id="drag${event.target.id.slice(event.target.id.length - 1)}" class="wordBlocks" draggable="true" ondragstart="drag(event)">${event.target.textContent.trim()}</div>`;
+            event.target.parentElement.innerHTML += `<div id="text${id.slice(id.length - 1)}" class="wordBlocks" draggable="true" ondragstart="drag(event)">${data} </div>`;
+            event.target.style.margin = "16px 8px";
+            document.querySelector(`#text${id.slice(id.length - 1)}`).style.margin = "0";
+            document.querySelector(`#${event.target.id} `).remove();
+            document.querySelector(`#${id}`).remove();
+        }
     }
     if (id.includes('text')) {
-        const parent = document.querySelector(`#${id}`).parentElement;
-        event.target.innerHTML += `<div id="drag${id.slice(id.length - 1)}" class="wordBlocks" draggable="true" ondragstart="drag(event)">${data.trim()}</div>`;
-        parent.style.padding = "8px";
-        parent.style.width = "50px";
-        parent.style.height = "20px";
-        document.querySelector(`#drag${id.slice(id.length - 1)}`).style.margin = "16px 8px";
+        if (event.target.id.includes('phrases')) {
+            event.target.innerHTML += `<div id="drag${id.slice(id.length - 1)}" class="wordBlocks" draggable="true" ondragstart="drag(event)">${data.trim()}</div>`;
+            currentField.classList = "emptyField";
+            document.querySelector(`#drag${id.slice(id.length - 1)}`).style.margin = "16px 8px";
+            document.querySelector(`#${id} `).remove();
+        }
+        if (event.target.parentElement.id.includes('textField')) {
+            phrasesField.innerHTML += `<div id="drag${event.target.id.slice(event.target.id.length - 1)}" class="wordBlocks" draggable="true" ondragstart="drag(event)">${event.target.textContent.trim()}</div>`;
+            currentField.classList = "emptyField";
+            document.querySelector(`#${id}`).remove();
+            event.target.parentElement.innerHTML = `<div id="${id}" class="wordInner" draggable="true" ondragstart="drag(event)">${data}</div>`;
+            event.target.remove();
+        }
+        if (event.target.id.includes('textField')) {
+            currentField.classList = "emptyField";
+            document.querySelector(`#${id}`).remove();
+            event.target.innerHTML = `<div id="${id}" class="wordInner" draggable="true" ondragstart="drag(event)">${data}</div>`;
+            event.target.classList = "occupiedField";
+        }
     }
-    document.querySelector(`#${id} `).remove();
 }
 
 checkButton.addEventListener('click', () => {
