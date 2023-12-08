@@ -29,6 +29,16 @@ for (let i = 0; i < subPhrases.length; i++) {
     dropField.innerHTML += `<div id="textField${i + 1}" class="emptyField" ondragover="allowDrop(event)" ondrop="drop(event)"></div>`;
 }
 
+const playSound = (sound) => {
+    const song = document.getElementById(sound);
+    song.volume = 1;
+    if (song.paused) {
+        song.play();
+    } else {
+        song.pause();
+    }
+}
+
 const getId = (oldId, newId) => newId + oldId.slice(oldId.length - 1);
 
 function allowDrop(event) {
@@ -52,6 +62,7 @@ function drop(event) {
             event.target.classList = "occupiedField";
             document.querySelector(`#${getId(currentId, 'text')}`).style.margin = "0";
             document.querySelector(`#${currentId} `).remove();
+            playSound('sound1');
         }
         if (event.target.parentElement.id.includes('textField')) {
             phrasesField.innerHTML += `<div id="${getId(targetId, 'drag')}" class="wordBlocks" draggable="true" ondragstart="drag(event)">${event.target.textContent.trim()}</div>`;
@@ -64,10 +75,11 @@ function drop(event) {
     }
     if (currentId.includes('text')) {
         if (targetId.includes('phrases')) {
-            event.target.innerHTML += `<div id="${getId(currentId, 'text')}" class="wordBlocks" draggable="true" ondragstart="drag(event)">${data.trim()}</div>`;
+            event.target.innerHTML += `<div id="${getId(currentId, 'drag')}" class="wordBlocks" draggable="true" ondragstart="drag(event)">${data.trim()}</div>`;
             currentField.classList = "emptyField";
-            document.querySelector(`#${getId(currentId, 'drag')}`).style.margin = "16px 8px";
             document.querySelector(`#${currentId} `).remove();
+            document.querySelector(`#${getId(currentId, 'drag')}`).style.margin = "16px 8px";
+            playSound('sound1');
         }
         if (event.target.parentElement.id.includes('textField')) {
             phrasesField.innerHTML += `<div id="${getId(targetId, 'drag')}" class="wordBlocks" draggable="true" ondragstart="drag(event)">${event.target.textContent.trim()}</div>`;
@@ -75,12 +87,14 @@ function drop(event) {
             document.querySelector(`#${currentId}`).remove();
             event.target.parentElement.innerHTML = `<div id="${currentId}" class="wordInner" draggable="true" ondragstart="drag(event)">${data}</div>`;
             event.target.remove();
+            playSound('sound1');
         }
         if (targetId.includes('textField')) {
             currentField.classList = "emptyField";
             document.querySelector(`#${currentId}`).remove();
             event.target.innerHTML = `<div id="${currentId}" class="wordInner" draggable="true" ondragstart="drag(event)">${data}</div>`;
             event.target.classList = "occupiedField";
+            playSound('sound1');
         }
     }
 }
@@ -93,6 +107,7 @@ checkButton.addEventListener('click', () => {
     console.log(str.trim());
     if (str.trim() === phrase) {
         msgField.textContent = "Win!";
+        playSound('sound2')
         sayAnswer(str.trim());
     } else {
         msgField.textContent = "Loss!";
@@ -115,3 +130,8 @@ function sayAnswer(str) {
         window.speechSynthesis.speak(msg);
     }
 }
+
+const restartButton = document.querySelector('#restart');
+restartButton.addEventListener('click', () => {
+    location.reload();
+});

@@ -1,11 +1,30 @@
+body {
+    background-color: rgb(226, 238, 211);
+}
+
+#msg {
+    font-size: 24px;
+    margin: 4px;
+}
+
 #words {
-    background-color: tan;
+    background-color: rgb(180, 235, 104);
     padding: 20px;
-    display: inline-block;
+    display: inline-flex;
+}
+
+.btn {
+    padding: 12px;
+    border-radius: 12px;
+    cursor: pointer;
 }
 
 #check {
-    display: block;
+    background-color: rgb(192, 227, 143);
+}
+
+#restart {
+    background-color: rgb(227, 188, 143);
 }
 
 .emptyField {
@@ -27,7 +46,7 @@
 
 .wordBlocks {
     padding: 12px;
-    background-color: #ff2d2d;
+    background-color: #53ea67;
     border-radius: 9px;
     z-index: 2;
     margin: 16px 8px;
@@ -35,11 +54,12 @@
 
 .wordInner {
     padding: 12px;
-    background-color: #ff2d2d;
+    background-color: #53ea67;
     border-radius: 9px;
     z-index: 2;
 }
 
 #phrases {
     display: flex;
+    min-height: 64px;
 }
