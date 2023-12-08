@@ -1,3 +1,5 @@
+'use strict';
+
 const phrases = [
     'This building was built in 1972',
     'Such a good day',
@@ -91,7 +93,25 @@ checkButton.addEventListener('click', () => {
     console.log(str.trim());
     if (str.trim() === phrase) {
         msgField.textContent = "Win!";
+        sayAnswer(str.trim());
     } else {
         msgField.textContent = "Loss!";
     }
 });
+
+function sayAnswer(str) {
+    const speechMsgInput = str;
+    window.speechSynthesis.onvoiceschanged = function (e) {
+        let voices = speechSynthesis.getVoices();
+        if (speechMsgInput.length > 0) {
+            speak(speechMsgInput, voices);
+        }
+    };
+    function speak(text, voices) {
+        let msg = new SpeechSynthesisUtterance();
+        let voice = voices.find(voice => voice.name === 'Google US English');
+        msg.text = text;
+        msg.voice = voice;
+        window.speechSynthesis.speak(msg);
+    }
+}
